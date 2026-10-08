@@ -117,6 +117,29 @@ h2{margin:0;font-size:1.5rem}
 .modal.on{display:flex}
 .mbox{background:#fff;border-radius:30px;padding:22px 26px;text-align:center;max-width:620px;width:100%;box-shadow:0 20px 50px rgba(0,0,0,.15)}
 .vlist{display:flex;flex-direction:column;gap:6px;text-align:left;max-height:50vh;overflow:auto;margin:12px 0}
+.board{display:flex;gap:14px;justify-content:center}
+.team{background:#fff;border-radius:999px;padding:4px 20px;font-weight:800;font-size:1.3rem;display:flex;align-items:center;gap:8px;box-shadow:0 4px 0 rgba(0,0,0,.08)}
+.team b{font-size:2rem;line-height:1}.team.cl b{color:var(--acc2)}.team.ca b{color:var(--acc-d)}.team .capi{height:44px;width:auto}
+.bump{animation:bump .5s}@keyframes bump{40%{transform:scale(1.18)}}
+.col{display:flex;flex-direction:column;gap:14px;align-items:center}
+.medal{font-size:clamp(3rem,7vw,5rem);text-align:center;letter-spacing:6px}.dimS{opacity:.2;filter:grayscale(1)}
+.res{font-size:1.3em;color:var(--acc-d)}
+.btn.bad{background:#fee2e2;color:#b91c1c}.btn.okb{background:var(--ok-bg);color:var(--ok)}
+.rhud{position:absolute;top:3%;left:3%;right:3%;display:flex;gap:14px;align-items:center;z-index:3}
+.track{flex:1;height:24px;background:rgba(255,255,255,.85);border-radius:99px;position:relative;box-shadow:0 3px 0 rgba(0,0,0,.08)}
+.track i{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--acc2);border-radius:99px;transition:width .4s}
+.track span{position:absolute;top:50%;transform:translate(-50%,-50%);transition:left .4s}
+.track span .capi{height:56px;width:auto}.track .fl{font-size:34px}
+.cue{top:17%!important}.cue .cbar{display:block;height:10px;background:#dc2626;border-radius:9px;margin-top:4px;width:100%}
+.obs.emo{width:auto;font-size:clamp(3rem,7vw,5.5rem);line-height:1}
+.obs.mid{bottom:42%}.obs.pud{width:18%;bottom:13%}.obs.flag{font-size:clamp(5rem,12vw,9rem)}
+.scene.shake{animation:shake .4s}@keyframes shake{25%{transform:translateX(-10px)}75%{transform:translateX(10px)}}
+.die-mod{width:clamp(200px,22vw,300px);height:clamp(200px,24vw,320px);border-color:#a855f7}
+.dmod{font-size:clamp(1.6rem,3vw,2.6rem);font-weight:800;text-align:center;color:#7e22ce;line-height:1.1}
+.pips{font-size:clamp(1.2rem,2.6vw,2rem);color:var(--acc2);letter-spacing:3px;text-align:center;max-width:90%;line-height:1}
+.qpose{font-size:clamp(8rem,22vh,14rem);line-height:1.3;text-align:center}
+.nextB{background:#fff;border-radius:24px;padding:10px 14px;display:flex;flex-direction:column;align-items:center;box-shadow:0 6px 0 rgba(0,0,0,.08);max-width:220px;text-align:center}
+.nextB small{font-weight:800;color:var(--muted)}.nextB .capi{height:clamp(90px,16vh,140px)}.nextB b{line-height:1.1}
 @media (max-width:1000px){.ggrid{grid-template-columns:repeat(2,1fr)}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
@@ -221,12 +244,32 @@ function animTick(dt){ANIM.forEach(a=>{a.t+=dt;if(a.t>=a.ms){a.t=0;a.i=(a.i+1)%a
 
 /* ================== DATOS ================== */
 const EX=[
- {n:'saltos de tijera',f:['star','stand'],ms:800,lv:0},{n:'sentadillas',f:['squat','stand'],ms:1600,lv:0},{n:'correr en el sitio',f:['run1','run2'],ms:400,secs:1,lv:0},
- {n:'rodillas arriba',f:['kneeL','kneeR'],ms:800,lv:0},{n:'saltos con pies juntos',f:['jump','stand'],ms:1000,lv:0},{n:'equilibrio a la pata coja',f:['flamingo'],secs:1,lv:0},
- {n:'puñetazos al aire',f:['punchL','punchR'],ms:700,lv:0},{n:'inclinaciones laterales',f:['sideL','sideR'],ms:1600,lv:0},{n:'molinillos con los brazos',f:['up','cross','stand','cross'],ms:1600,secs:1,lv:1},
- {n:'equilibrio de avión',f:['plane1','plane2'],ms:3000,secs:1,lv:1},{n:'saltos de rana',f:['squat','jump'],ms:1500,lv:2},{n:'saltos de patinador',f:['skL','skR'],ms:1000,lv:2},
- {n:'rodilla al cielo',f:['kneeUp','stand'],ms:1000,lv:1},{n:'aplausos arriba',f:['clap','stand'],ms:700,lv:0}];
-const STATUES=[{n:'el flamenco',p:'flamingo'},{n:'la estrella',p:'star'},{n:'el avión',p:'plane1'},{n:'el árbol',p:'tree'},{n:'el robot',p:'robot'},{n:'el superhéroe',p:'hero'},{n:'la sentadilla',p:'squat'},{n:'el boxeador',p:'punchL'},{n:'el abrazo',p:'hug'}];
+ {n:'saltos de tijera',an:'saltos de estrella',ae:'⭐',f:['star','stand'],ms:800,lv:0,t:'c'},
+ {n:'sentadillas',an:'agacharse como una rana',ae:'🐸',f:['squat','stand'],ms:1600,lv:0,t:'f'},
+ {n:'correr en el sitio',an:'correr como un caballo',ae:'🐴',f:['run1','run2'],ms:400,secs:1,lv:0,t:'c'},
+ {n:'rodillas arriba',an:'marchar como un soldado',ae:'💂',f:['kneeL','kneeR'],ms:800,lv:0,t:'c'},
+ {n:'saltos con pies juntos',an:'saltos de canguro',ae:'🦘',f:['jump','stand'],ms:1000,lv:0,t:'c'},
+ {n:'equilibrio a la pata coja',an:'el flamenco',ae:'🦩',f:['flamingo'],secs:1,lv:0,t:'e'},
+ {n:'puñetazos al aire',an:'boxear como un canguro',ae:'🥊',f:['punchL','punchR'],ms:700,lv:0,t:'f'},
+ {n:'inclinaciones laterales',an:'el árbol con viento',ae:'🌳',f:['sideL','sideR'],ms:1600,lv:0,t:'e'},
+ {n:'aplausos arriba',an:'aplaudir como una foca',ae:'🦭',f:['clap','stand'],ms:700,lv:0,t:'c'},
+ {n:'molinillos con los brazos',f:['up','cross','stand','cross'],ms:1600,secs:1,lv:1,t:'f'},
+ {n:'equilibrio de avión',f:['plane1','plane2'],ms:3000,secs:1,lv:1,t:'e'},
+ {n:'rodilla al cielo',f:['kneeUp','stand'],ms:1000,lv:1,t:'f'},
+ {n:'equilibrio del árbol',f:['tree'],secs:1,lv:1,t:'e'},
+ {n:'saltos de rana',f:['squat','jump'],ms:1500,lv:2,t:'f'},
+ {n:'saltos de patinador',f:['skL','skR'],ms:1000,lv:2,t:'c'},
+ {n:'boxeo rápido',f:['punchL','punchR'],ms:350,secs:1,lv:2,t:'c'},
+ {n:'skipping de rodillas',f:['kneeL','kneeR'],ms:350,secs:1,lv:3,t:'c'},
+ {n:'estrella con sentadilla',f:['star','squat'],ms:1400,lv:3,t:'f'}];
+const MODOS=[{n:'normal',f:1},{n:'a cámara lenta',f:1.8,lv:1},{n:'¡muy rápido!',f:.6,lv:2},{n:'con palmada al final',f:1,lv:2,clap:1},{n:'contando en inglés',f:1,lv:2,en:1}];
+const ENUM=['one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen','twenty'];
+const TAB={inf:{w:15,r:15,l:1,n:4,nm:'Circuito de los animales'},c12:{w:20,r:15,l:1,n:5,nm:'Circuito explorador'},c34:{w:25,r:10,l:2,n:5,nm:'Circuito campeón'},c56:{w:30,r:10,l:2,n:6,nm:'Tabata atleta'}};
+const STATUES=[{n:'el flamenco',p:'flamingo',lv:0},{n:'la estrella',p:'star',lv:0},{n:'el avión',p:'plane1',lv:0},{n:'el robot',p:'robot',lv:0},{n:'el superhéroe',p:'hero',lv:0},{n:'el saludo',p:'wave',lv:0},
+ {n:'el árbol',p:'tree',lv:1},{n:'la sentadilla',p:'squat',lv:1},{n:'el boxeador',p:'punchL',lv:1},{n:'el abrazo',p:'hug',lv:1},
+ {n:'la rodilla al cielo',p:'kneeUp',lv:2},{n:'el patinador',p:'skL',lv:2},{n:'la inclinación',p:'sideR',lv:2},{n:'el avión al revés',p:'plane2',lv:3},{n:'el patinador al revés',p:'skR',lv:3}];
+const DANCES=[{t:'¡Baila como quieras!',f:['dance1','dance2']},{t:'¡Baila como un robot!',f:['robot','punchR']},{t:'¡Baila saltando!',f:['jump','stand']},{t:'¡Mueve los brazos!',f:['up','cross']},{t:'¡Baila con las rodillas!',f:['kneeL','kneeR']},{t:'¡Baila agachado!',f:['squat','hips']}];
+const RULES=['con los ojos cerrados','sin sonreír','con la boca abierta','sin parpadear'];
 const LIGHTS=[{c:'#22c55e',n:'VERDE',a:'¡Corre en el sitio!',f:['run1','run2'],ms:400},{c:'#facc15',n:'AMARILLO',a:'Camina despacio',f:['run1','run2'],ms:1100},{c:'#ef4444',n:'ROJO',a:'¡Quietos!',f:['stand']},
  {c:'#3b82f6',n:'AZUL',a:'¡Salta!',f:['jump','stand'],ms:900,x:1},{c:'#a855f7',n:'MORADO',a:'¡Agáchate!',f:['squat'],x:1}];
 const MOVES=[{n:'Brazos arriba',p:'up'},{n:'Palmada',p:'clap'},{n:'Manos a la cabeza',p:'head'},{n:'Salto',p:'jump'},{n:'Agacharse',p:'squat'},{n:'Rodilla arriba',p:'kneeR'},
@@ -250,10 +293,10 @@ const STORIES=[
 const STRETCH=[['Estírate muy alto, hacia el cielo','up'],['Inclínate hacia un lado','sideL'],['Ahora hacia el otro lado','sideR'],['Brazos en cruz, muy largos','cross'],
  ['Date un abrazo fuerte','hug'],['Equilibrio del árbol','tree'],['Sacude el cuerpo suavecito',['shake1','shake2']],['Cierra los ojos y sonríe','sleep']];
 const GAMES=[
- {id:'runner',ic:'🏃',n:'Capitulín Runner',s:'Salta, agáchate y esquiva'},{id:'dado',ic:'🎲',n:'Dado de ejercicios',s:'¿Qué ejercicio y cuántas veces?'},
- {id:'estatuas',ic:'🧊',n:'Las estatuas',s:'Baila y congélate en la pose'},{id:'semaforo',ic:'🚦',n:'El semáforo',s:'Corre, camina, ¡para!'},
- {id:'espejo',ic:'🪞',n:'El espejo',s:'Memoriza y repite los movimientos'},{id:'aventura',ic:'🗺️',n:'La aventura',s:'Cuento motor guiado'},
- {id:'calma',ic:'🧘',n:'Vuelta a la calma',s:'Respiración y estiramientos'},{id:'tabata',ic:'⏱️',n:'Circuito Tabata',s:'Trabajo y descanso por tiempo'}];
+ {id:'runner',ic:'🏃',n:'Capitulín Runner',s:'Carrera hasta la meta'},{id:'dado',ic:'🎲',n:'Dado de ejercicios',s:'Ejercicio, veces y cómo'},
+ {id:'estatuas',ic:'🧊',n:'Las estatuas',s:'Clase contra Capitulín'},{id:'semaforo',ic:'🚦',n:'El semáforo',s:'Clase contra Capitulín'},
+ {id:'espejo',ic:'🪞',n:'El espejo',s:'Memoria y récord'},{id:'aventura',ic:'🗺️',n:'La aventura',s:'Cuento motor guiado'},
+ {id:'calma',ic:'🧘',n:'Vuelta a la calma',s:'Respiración y estiramientos'},{id:'tabata',ic:'⏱️',n:'Circuito Tabata',s:'Circuito según el curso'}];
 
 /* ================== MOTOR ================== */
 const T={ts:[],is:[],raf:0};
@@ -269,8 +312,8 @@ function startGame(id,opts={}){stopAll();const g=GAMES.find(x=>x.id===id);CUR={i
  every(100,()=>{if(!CUR||CUR.paused)return;CUR.el+=100;animTick(100);CUR.step&&CUR.step(100);
   $('#gTime').textContent=opts.dur?'⏳ '+fmt(opts.dur-CUR.el):'⏱ '+fmt(CUR.el);
   if(opts.dur&&CUR.el>=opts.dur&&!CUR.ended){CUR.ended=true;stepDone();}});}
-function finishGame(html){if(CUR&&CUR.opts.done){CUR.ended=true;return stepDone();}
- gb().innerHTML=`<div class="mid"><div class="bigcapi" id="fc"></div><div><div class="bigtxt">${html}</div><div class="row" style="margin-top:20px"><button class="btn pri big2" id="fAgain">🔁 Otra vez</button><button class="btn big2" id="fHome">🏠 Inicio</button></div></div></div>`;
+function finishGame(html,stars=3){if(CUR&&CUR.opts.done){CUR.ended=true;return stepDone();}
+ gb().innerHTML=`<div class="mid"><div class="bigcapi" id="fc"></div><div><div class="bigtxt">${html}</div><div class="medal">${'⭐'.repeat(stars)}<span class="dimS">${'⭐'.repeat(3-stars)}</span></div><div class="row" style="margin-top:20px"><button class="btn pri big2" id="fAgain">🔁 Otra vez</button><button class="btn big2" id="fHome">🏠 Inicio</button></div></div></div>`;
  setCapi($('#fc'),['cheer','stand'],600);sfx('good');const id=CUR.id;$('#fAgain').onclick=()=>startGame(id);$('#fHome').onclick=goHome;}
 $('#pauseBtn').onclick=()=>{if(!CUR)return;CUR.paused=!CUR.paused;$('#pauseBtn').textContent=CUR.paused?'▶ Seguir':'⏸ Pausa';
  if(CUR.paused){musicStop();if('speechSynthesis' in window)speechSynthesis.cancel();CUR.onPause&&CUR.onPause();}else CUR.onResume&&CUR.onResume();};
@@ -279,78 +322,140 @@ const pauseHook=(C,el)=>{C.onPause=()=>el&&el.classList.add('paused');};
 
 /* ================== JUEGOS ================== */
 const G={};
+/* marcador Clase vs Capitulín */
+function board(){return `<div class="board"><div class="team cl" id="tmc">👧👦 Clase <b id="scc">0</b></div><div class="team ca" id="tmk">${capi('stand')} Capitulín <b id="sck">0</b></div></div>`;}
+function point(sc,w){sc[w]++;const el=$('#sc'+w),tm=$('#tm'+w);if(el)el.textContent=sc[w];if(tm){tm.classList.remove('bump');void tm.offsetWidth;tm.classList.add('bump');}sfx(w==='c'?'good':'bad');}
+function result(sc){return sc.c>sc.k?`🏆 ¡Gana la clase!<br><span class="res">${sc.c} – ${sc.k}</span>`:sc.c===sc.k?`🤝 ¡Empate!<br><span class="res">${sc.c} – ${sc.k}</span>`:`😜 ¡Gana Capitulín!<br><span class="res">${sc.c} – ${sc.k}</span>`;}
+const starsOf=sc=>{const r=sc.c/((sc.c+sc.k)||1);return r>=.85?3:r>=.6?2:1;};
+const nmEx=e=>S.level==='inf'&&e.an?e.an:e.n, emEx=e=>S.level==='inf'&&e.ae?e.ae+' ':'';
+
+/* ---------- 1. RUNNER: carrera hasta la meta ---------- */
 const OBS={
- log:{txt:'¡SALTA!',sp:'¡Salta!',pose:'jump',cls:'jump',html:'<svg viewBox="0 0 120 60"><rect x="4" y="14" width="112" height="42" rx="21" fill="#a16207"/><path d="M20 26 H70 M30 42 H90" stroke="#854d0e" stroke-width="4" stroke-linecap="round"/><ellipse cx="104" cy="35" rx="12" ry="20" fill="#fcd34d" stroke="#a16207" stroke-width="4"/><circle cx="104" cy="35" r="5" fill="none" stroke="#a16207" stroke-width="2"/></svg>'},
- branch:{txt:'¡AGÁCHATE!',sp:'¡Agáchate!',pose:'squat',cls:'',top:1,html:'<svg viewBox="0 0 160 70"><path d="M0 22 Q80 8 160 26" stroke="#78350f" stroke-width="12" fill="none" stroke-linecap="round"/><g fill="#22c55e"><ellipse cx="30" cy="40" rx="16" ry="10"/><ellipse cx="70" cy="34" rx="18" ry="11"/><ellipse cx="112" cy="40" rx="16" ry="10"/><ellipse cx="146" cy="44" rx="14" ry="9"/></g></svg>'},
- rock:{txt:'¡PASO AL LADO!',sp:'¡Paso al lado!',pose:'hips',cls:'dodge',html:'<svg viewBox="0 0 100 70"><path d="M8 66 Q4 34 32 16 Q58 0 80 18 Q100 36 94 66Z" fill="#94a3b8"/><path d="M30 30 Q44 22 56 28" stroke="#cbd5e1" stroke-width="5" fill="none" stroke-linecap="round"/></svg>'},
- star:{txt:'¡MANOS ARRIBA!',sp:'¡Manos arriba!',pose:'up',cls:'',air:1,html:'⭐'}};
-G.runner=(C)=>{const L=LV();
- gb().innerHTML=`<div class="scene" id="sc"><div class="clouds"></div><div class="hills"></div><div class="ground"></div><div class="runner" id="rc"></div><div class="cue" id="cue">¡Corre en el sitio!</div></div>`;
+ log:{ic:'🪵',txt:'¡SALTA!',sp:'¡Salta!',pose:'jump',cls:'jump',pos:'',html:'<svg viewBox="0 0 120 60"><rect x="4" y="14" width="112" height="42" rx="21" fill="#a16207"/><path d="M20 26 H70 M30 42 H90" stroke="#854d0e" stroke-width="4" stroke-linecap="round"/><ellipse cx="104" cy="35" rx="12" ry="20" fill="#fcd34d" stroke="#a16207" stroke-width="4"/></svg>'},
+ branch:{ic:'🌿',txt:'¡AGÁCHATE!',sp:'¡Agáchate!',pose:'squat',cls:'',pos:'top',html:'<svg viewBox="0 0 160 70"><path d="M0 22 Q80 8 160 26" stroke="#78350f" stroke-width="12" fill="none" stroke-linecap="round"/><g fill="#22c55e"><ellipse cx="30" cy="40" rx="16" ry="10"/><ellipse cx="70" cy="34" rx="18" ry="11"/><ellipse cx="112" cy="40" rx="16" ry="10"/><ellipse cx="146" cy="44" rx="14" ry="9"/></g></svg>'},
+ rock:{ic:'🪨',txt:'¡PASO AL LADO!',sp:'¡Paso al lado!',pose:'hips',cls:'dodge',pos:'',html:'<svg viewBox="0 0 100 70"><path d="M8 66 Q4 34 32 16 Q58 0 80 18 Q100 36 94 66Z" fill="#94a3b8"/><path d="M30 30 Q44 22 56 28" stroke="#cbd5e1" stroke-width="5" fill="none" stroke-linecap="round"/></svg>'},
+ star:{ic:'⭐',txt:'¡MANOS ARRIBA!',sp:'¡Manos arriba!',pose:'up',cls:'',pos:'air emo',html:'⭐'},
+ coin:{ic:'👏',txt:'¡PALMADA!',sp:'¡Palmada!',pose:'clap',cls:'',pos:'air emo',html:'🪙'},
+ bird:{ic:'🐦',txt:'¡AGÁCHATE!',sp:'¡Un pájaro! ¡Agáchate!',pose:'squat',cls:'',pos:'mid emo',html:'🐦'},
+ puddle:{ic:'💧',txt:'¡SALTO LARGO!',sp:'¡Charco! ¡Salto largo!',pose:'jump',cls:'jump',pos:'pud',html:'<svg viewBox="0 0 160 40"><ellipse cx="80" cy="22" rx="76" ry="16" fill="#60a5fa"/><ellipse cx="60" cy="18" rx="30" ry="5" fill="#bfdbfe"/></svg>'},
+ spin:{ic:'🌀',txt:'¡DA UNA VUELTA!',sp:'¡Da una vuelta!',pose:'turn',cls:'',pos:'emo',html:'🌀'},
+ flag:{ic:'🏁',txt:'¡META!',sp:'¡Llegamos a la meta!',pose:'cheer',cls:'',pos:'emo flag',html:'🏁'}};
+const RUNSET={inf:['log','branch','star'],c12:['log','branch','star','rock','coin'],c34:['log','branch','star','rock','coin','bird','puddle'],c56:['log','branch','star','rock','coin','bird','puddle','spin']};
+const RUNLEN={inf:10,c12:14,c34:18,c56:22};
+G.runner=(C)=>{const L=LV(),set=RUNSET[S.level],len=RUNLEN[S.level],combo=L.i>=2;
+ gb().innerHTML=`<div class="scene" id="sc"><div class="clouds"></div><div class="hills"></div><div class="ground"></div>
+  <div class="rhud"><div class="track"><i id="rT"></i><span id="rI" style="left:0%">${capi('run1')}</span><span class="fl" style="left:100%">🏁</span></div><div class="pill">⭐ <b id="rS">0</b>/${len}</div></div>
+  <div class="runner" id="rc"></div><div class="cue" id="cue">¡Corre en el sitio!</div></div>
+  <div class="row"><button class="btn big2 bad" id="rF">💥 Alguien ha fallado</button><div class="pill">Fallos: <b id="rFn">0</b></div><button class="btn big2" id="rV"></button></div>`;
  const rc=$('#rc'),cue=$('#cue'),sc=$('#sc');setCapi(rc,['run1','run2'],380);musicStart('dance');
- let clock=0,next=1800,gap=L.gap,obs=[],last=performance.now(),busy=0;
+ const SPD=[['🐢 Lento',1.45],['🚶 Normal',1.15],['🐇 Rápido',.9]];if(S.rspeed==null)S.rspeed=S.level==='inf'?0:1;
+ const lab=()=>$('#rV').textContent='Velocidad: '+SPD[S.rspeed][0];lab();$('#rV').onclick=()=>{S.rspeed=(S.rspeed+1)%3;save();lab();};
+ const REST=[3800,3200,2700,2300][L.i];let pending=false;
+ let clock=0,next=2400,gap=L.gap,travel=L.travel,obs=[],last=performance.now(),busy=0,spawned=0,passed=0,fails=0,stars=0,flag=false,over=false,lastK='',warnB=null;
  C.onPause=()=>sc.classList.add('paused');C.onResume=()=>{sc.classList.remove('paused');musicStart('dance');};
- const spawn=()=>{const k=rand(Object.keys(OBS)),o=OBS[k],el=document.createElement('div');el.className='obs'+(o.top?' top':'')+(o.air?' air':'');el.innerHTML=o.html;el.style.left='110%';sc.appendChild(el);obs.push({o,el,t:0});};
- const loop=now=>{const dt=Math.min(100,now-last);last=now;
-  if(!C.paused){clock+=dt;if(clock>=next){spawn();next=clock+gap;gap=Math.max(L.gapMin,gap*.97);}
-   for(const b of obs){b.t+=dt;const x=110-b.t/L.travel*130;b.el.style.left=x+'%';
-    if(!b.warn&&x<62){b.warn=true;busy++;cue.textContent=b.o.txt;cue.classList.remove('hot');void cue.offsetWidth;cue.classList.add('hot');sfx('beep');say(b.o.sp);}
-    if(!b.act&&x<20){b.act=true;setCapi(rc,[b.o.pose]);if(b.o.cls)rc.classList.add(b.o.cls);
-     after(900,()=>{rc.classList.remove('jump','dodge');busy--;if(busy<=0){busy=0;setCapi(rc,['run1','run2'],380);cue.textContent='¡Corre en el sitio!';cue.classList.remove('hot');}});}
+ $('#rF').onclick=()=>{if(over)return;fails++;stars=Math.max(0,stars-1);$('#rFn').textContent=fails;$('#rS').textContent=stars;sfx('bad');sc.classList.remove('shake');void sc.offsetWidth;sc.classList.add('shake');};
+ const spawn=k=>{const o=OBS[k],el=document.createElement('div');el.className='obs '+o.pos;el.innerHTML=o.html;el.style.left='110%';sc.appendChild(el);obs.push({o,el,t:0,trav:travel*SPD[S.rspeed][1],k});pending=true;};
+ const finish=()=>{over=true;musicStop();cue.textContent='🏁 ¡META!';setCapi(rc,['cheer','stand'],500);sfx('good');say('¡Meta! ¡Lo habéis conseguido!');
+  const st=fails===0?3:fails<=2?2:1;after(2200,()=>finishGame(`🏁 ¡Habéis llegado a la meta!<br>⭐ ${stars} de ${len}`,st));};
+ const loop=now=>{if(over||!document.body.contains(sc))return;const dt=Math.min(100,now-last);last=now;
+  if(!C.paused){clock+=dt;
+   if(spawned<len&&!pending&&clock>=next){let k;do{k=rand(set);}while(k===lastK&&set.length>2);lastK=k;spawn(k);spawned++;}
+   else if(spawned>=len&&!flag&&!pending&&clock>=next){flag=true;spawn('flag');}
+   for(const b of obs){b.t+=dt;const x=110-b.t/b.trav*130;b.el.style.left=x+'%';
+    if(!b.warn&&x<88){b.warn=true;warnB=b;cue.innerHTML=`${b.o.ic} ${b.o.txt}<i class="cbar" id="cb"></i>`;cue.classList.remove('hot');void cue.offsetWidth;cue.classList.add('hot');
+     if(b.k!=='flag'){busy++;sfx('beep');say(b.o.sp);}}
+    if(b===warnB){const cb=$('#cb');if(cb)cb.style.width=Math.max(0,Math.min(100,(x-20)/68*100))+'%';}
+    if(!b.act&&x<20){b.act=true;if(b.k==='flag'){finish();return;}
+     pending=false;next=clock+REST*SPD[S.rspeed][1];passed++;stars++;$('#rS').textContent=stars;$('#rT').style.width=passed/len*100+'%';$('#rI').style.left=passed/len*100+'%';
+     setCapi(rc,[b.o.pose]);if(b.o.cls)rc.classList.add(b.o.cls);
+     if(passed===Math.round(len/3)||passed===Math.round(len*2/3)){travel*=.94;after(1100,()=>{if(!over){say('¡Más rápido!');sfx('go');}});}
+     after(1500,()=>{rc.classList.remove('jump','dodge');busy--;if(busy<=0&&!over){busy=0;setCapi(rc,['run1','run2'],380);cue.textContent='¡Corre en el sitio!';cue.classList.remove('hot');}});}
     if(x<-25){b.el.remove();b.dead=true;}}
    obs=obs.filter(b=>!b.dead);}
   T.raf=requestAnimationFrame(loop);};
- T.raf=requestAnimationFrame(loop);say('¡Corre en el sitio con Capitulín!');};
+ T.raf=requestAnimationFrame(loop);say('¡Preparados! Corremos hasta la meta con Capitulín');};
 
-G.dado=(C,opts)=>{const L=LV(),exs=EX.filter(e=>e.lv<=L.i);let ex=null,num=0,state='idle',cnt=0,acc=0,said=0;
+/* ---------- 2. DADOS ---------- */
+G.dado=(C,opts)=>{const L=LV(),inf=L.i===0,exs=EX.filter(e=>e.lv<=L.i),modos=MODOS.filter(m=>(m.lv||0)<=L.i),three=L.i>=1,R=inf?4:6;
+ let ex=null,num=0,mo=modos[0],state='idle',cnt=0,acc=0,said=-1,rolls=0,total=0,secsT=0;
  gb().innerHTML=`<div class="dice"><div class="die die-ex"><div class="dlab">Ejercicio</div><div id="dC"></div><div class="dname" id="dN">¿?</div></div>
-  <div class="die die-num"><div class="dlab" id="dL">¿Cuántos?</div><div class="dnum" id="dV">?</div></div><div class="count" id="dK"></div></div>
-  <div class="row"><button class="btn pri big2" id="dRoll">🎲 Tirar los dados</button><button class="btn big2" id="dGo" disabled>▶ ¡Vamos!</button></div>`;
+  <div class="die die-num"><div class="dlab" id="dL">¿Cuántos?</div><div class="dnum" id="dV">?</div><div class="pips" id="dP"></div></div>
+  ${three?'<div class="die die-mod"><div class="dlab">¿Cómo?</div><div class="dmod" id="dM">?</div></div>':''}<div class="count" id="dK"></div></div>
+  <div class="row"><button class="btn pri big2" id="dRoll">🎲 Tirar los dados</button><button class="btn big2" id="dGo" disabled>▶ ¡Vamos!</button>${opts.auto?'':`<div class="pill">Tirada <b id="dR">0</b>/${R}</div>`}<div class="pill">💪 <b id="dT">0</b> movimientos</div></div>`;
  setCapi($('#dC'),['stand','wave'],900);
- const roll=()=>{if(state==='roll'||state==='run')return;state='roll';$('#dGo').disabled=true;$('#dK').textContent='';let k=0;
-  const it=every(100,()=>{if(C.paused)return;k++;const e=rand(exs);$('#dC').innerHTML=capi(e.f[0]);$('#dN').textContent=e.n;$('#dV').textContent=rand(e.secs?L.secs:L.reps);sfx('tick');
-   if(k>=16){clearInterval(it);ex=rand(exs);num=rand(ex.secs?L.secs:L.reps);setCapi($('#dC'),ex.f,ex.ms?ex.ms/ex.f.length:800);$('#dN').textContent=ex.n;$('#dV').textContent=num;
-    $('#dL').textContent=ex.secs?'Segundos':'Veces';state='ready';$('#dGo').disabled=false;sfx('good');say(ex.secs?`¡${num} segundos de ${ex.n}!`:`¡${num} ${ex.n}!`);if(opts.auto)after(3800,go);}});};
- const go=()=>{if(state!=='ready')return;state='run';cnt=0;acc=0;said=-1;$('#dGo').disabled=true;sfx('go');say('¡Ya!');$('#dK').textContent=ex.secs?num:'0';};
+ const roll=()=>{if(state!=='idle'&&state!=='ready')return;if(!opts.auto&&rolls>=R)return;state='roll';$('#dGo').disabled=true;$('#dK').textContent='';let k=0;
+  const it=every(90,()=>{if(C.paused)return;k++;const e=rand(exs);$('#dC').innerHTML=capi(e.f[0]);$('#dN').textContent=emEx(e)+nmEx(e);$('#dV').textContent=rand(L.reps);if(three)$('#dM').textContent=rand(modos).n;sfx('tick');
+   if(k>=16){clearInterval(it);let e2;do{e2=rand(exs);}while(e2===ex&&exs.length>1);ex=e2;num=rand(ex.secs?L.secs:L.reps);mo=three&&!ex.secs?rand(modos):modos[0];
+    setCapi($('#dC'),ex.f,(ex.ms||1600)*mo.f/ex.f.length);$('#dN').textContent=emEx(ex)+nmEx(ex);$('#dV').textContent=num;$('#dP').textContent=inf&&!ex.secs?'●'.repeat(num):'';
+    if(three)$('#dM').textContent=mo.n;$('#dL').textContent=ex.secs?'Segundos':'Veces';rolls++;if($('#dR'))$('#dR').textContent=rolls;
+    state='ready';$('#dGo').disabled=false;sfx('good');say(ex.secs?`${num} segundos de ${nmEx(ex)}`:`${num} ${nmEx(ex)}${mo.n!=='normal'?', '+mo.n:''}`);if(opts.auto)after(4200,go);}});};
+ const go=()=>{if(state!=='ready')return;state='pre';$('#dGo').disabled=true;$('#dRoll').disabled=true;say('¡Preparados, listos, ya!');
+  after(1700,()=>{if(state!=='pre')return;state='run';cnt=0;acc=0;said=-1;sfx('go');$('#dK').textContent=ex.secs?num:'0';});};
  C.step=dt=>{if(state!=='run')return;acc+=dt;
-  if(ex.secs){const left=num-Math.floor(acc/1000);if(left!==said){said=left;$('#dK').textContent=Math.max(0,left);if(left<=3&&left>0)sfx('beep');}if(acc>=num*1000)done();}
-  else if(acc>=ex.ms){acc-=ex.ms;cnt++;$('#dK').textContent=cnt;if(ex.ms>=700)say(String(cnt),null,1.2);else sfx('tick');if(cnt>=num)done();}};
- const done=()=>{state='idle';$('#dK').textContent='🎉';sfx('good');say(rand(['¡Muy bien!','¡Fenomenal!','¡Genial, campeones!']));if(opts.auto)after(2800,roll);};
+  if(ex.secs){const left=num-Math.floor(acc/1000);if(left!==said){said=left;$('#dK').textContent=Math.max(0,left);if(left<=3&&left>0)sfx('beep');}if(acc>=num*1000){secsT+=num;done();}}
+  else{const per=ex.ms*mo.f;if(acc>=per){acc-=per;cnt++;total++;$('#dT').textContent=total;$('#dK').textContent=cnt;
+   if(mo.en)say(ENUM[cnt-1]||String(cnt),null,1.1);else if(per>=650)say(String(cnt),null,1.2);else sfx('tick');if(cnt>=num)done();}}};
+ const done=()=>{state='idle';$('#dRoll').disabled=false;$('#dK').textContent='🎉';sfx('good');
+  if(mo.clap){say('¡Y palmada fuerte!');}else say(rand(['¡Muy bien!','¡Fenomenal!','¡Genial, campeones!']));
+  if(!opts.auto&&rolls>=R)after(2200,()=>finishGame(`🎲 ¡Reto completado!<br>💪 ${total} movimientos${secsT?` y ${secsT} segundos`:''}`,3));else if(opts.auto)after(2800,roll);};
  $('#dRoll').onclick=roll;$('#dGo').onclick=go;if(opts.auto)after(800,roll);};
 
-G.estatuas=(C,opts)=>{const L=LV();let state='wait',t=0,round=0,pose=null,lastS=-1;
- gb().innerHTML=`<div class="mid"><div class="bigcapi" id="sC"></div><div style="display:flex;flex-direction:column;gap:14px;align-items:center"><div class="banner" id="sB">🧊 Las estatuas<small>Cuando pare la música… ¡estatua!</small></div><div class="count" id="sK"></div></div></div>
-  <div class="row"><button class="btn pri big2" id="sGo">▶ Empezar</button><div class="pill">Ronda <span id="sR">0</span></div></div>`;
+/* ---------- 3. ESTATUAS: Clase contra Capitulín ---------- */
+G.estatuas=(C,opts)=>{const L=LV(),N=[6,8,10,12][L.i],poses=STATUES.filter(s=>s.lv<=L.i);let state='wait',t=0,round=0,pose=null,lastS=-1,moved=false;const sc={c:0,k:0};
+ gb().innerHTML=`${board()}<div class="mid"><div class="bigcapi" id="sC"></div><div class="col"><div class="banner" id="sB">🧊 Las estatuas<small>Cuando pare la música… ¡estatua!</small></div><div class="count" id="sK"></div></div></div>
+  <div class="row"><button class="btn pri big2" id="sGo">▶ Empezar</button><button class="btn big2 bad" id="sM" disabled>😱 ¡Alguien se ha movido!</button><div class="pill">Ronda <b id="sR">0</b>/${N}</div></div>`;
  setCapi($('#sC'),['hips','wave'],800);
- const dance=()=>{state='dance';t=rint(...L.dance);musicStart('dance');setCapi($('#sC'),['dance1','dance2'],420);$('#sB').innerHTML='🎵 ¡A bailar!';$('#sB').style.borderColor='var(--acc)';$('#sK').textContent='';};
- const freeze=()=>{state='statue';musicStop();pose=rand(STATUES);round++;$('#sR').textContent=round;setCapi($('#sC'),[pose.p]);
-  $('#sB').innerHTML=`🧊 ¡ESTATUA!<small>Pose: ${pose.n}</small>`;$('#sB').style.borderColor='#3b82f6';sfx('whistle');say('¡Estatua! '+pose.n);t=L.hold*1000;lastS=-1;};
- C.step=dt=>{if(state==='wait')return;t-=dt;if(state==='statue'){const s=Math.ceil(t/1000);if(s!==lastS){lastS=s;$('#sK').textContent=s>0?s:'';}}if(t<=0)state==='dance'?freeze():dance();};
+ const dance=()=>{if(round>=N&&!opts.auto)return end();state='dance';const d=rand(DANCES);t=rint(...L.dance);musicStart('dance');setCapi($('#sC'),d.f,420);
+  $('#sB').innerHTML=`🎵 ${d.t}`;$('#sB').style.borderColor='var(--acc)';$('#sK').textContent='';$('#sM').disabled=true;say(d.t);};
+ const freeze=()=>{state='statue';musicStop();pose=rand(poses);round++;moved=false;$('#sR').textContent=round;setCapi($('#sC'),[pose.p]);
+  const rule=L.i>=2&&Math.random()<.35?rand(RULES):'';$('#sB').innerHTML=`🧊 ¡ESTATUA!<small>${pose.n}${rule?' · '+rule:''}</small>`;$('#sB').style.borderColor='#3b82f6';
+  sfx('whistle');say('¡Estatua! '+pose.n+(rule?', '+rule:''));t=(L.hold+round*.3)*1000;lastS=-1;$('#sM').disabled=false;
+  if(L.i===3&&Math.random()<.4)after(1800,()=>{if(state==='statue'){setCapi($('#sC'),['stand']);$('#sC').innerHTML='<div class="qpose">❓</div>';$('#sB').innerHTML='🧠 ¡Recordad la pose!<small>Capitulín se ha escondido</small>';}});};
+ $('#sM').onclick=()=>{if(state!=='statue'||moved)return;moved=true;$('#sM').disabled=true;point(sc,'k');say('¡Pillados! Punto para Capitulín');};
+ C.step=dt=>{if(state==='wait'||state==='end')return;t-=dt;if(state==='statue'){const s=Math.ceil(t/1000);if(s!==lastS){lastS=s;$('#sK').textContent=s>0?s:'';}}
+  if(t>0)return;if(state==='pause')return dance();if(state==='dance')return freeze();
+  if(state==='statue'){if(!moved){point(sc,'c');say('¡Punto para la clase!');}state='pause';t=2200;$('#sM').disabled=true;}};
+ const end=()=>{state='end';musicStop();finishGame(result(sc),starsOf(sc));};
  C.onResume=()=>{if(state==='dance')musicStart('dance');};
- const start=()=>{$('#sGo').style.display='none';say('¡A bailar!');dance();};$('#sGo').onclick=start;if(opts.auto)after(1500,start);};
+ const start=()=>{$('#sGo').style.display='none';dance();};$('#sGo').onclick=start;if(opts.auto)after(1500,start);};
 
-G.semaforo=(C,opts)=>{const L=LV();let extra=L.extra,state='wait',t=0,cur=-1;
+/* ---------- 4. SEMÁFORO ---------- */
+G.semaforo=(C,opts)=>{const L=LV(),N=[10,14,18,20][L.i];let extra=L.extra,trick=L.i===3,state='wait',t=0,cur=-1,n=0,fail=false;const sc={c:0,k:0};
  const lights=()=>LIGHTS.filter(l=>extra||!l.x);
  const draw=()=>{$('#tl').innerHTML=lights().map((l,i)=>`<div class="lamp ${i===cur?'on':''}" style="--c:${l.c}"></div>`).join('');};
- gb().innerHTML=`<div class="mid"><div class="tlight" id="tl"></div><div class="bigcapi" id="tC"></div><div class="banner" id="tB">🚦 El semáforo<small>Mirad el color y haced la acción</small></div></div>
-  <div class="row"><button class="btn pri big2" id="tGo">▶ Empezar</button><button class="btn" id="tX"></button></div>`;
- const lab=()=>{$('#tX').textContent=extra?'🎨 Con azul y morado':'🎨 Solo 3 colores';};lab();draw();setCapi($('#tC'),['stand','wave'],800);
- $('#tX').onclick=()=>{extra=!extra;cur=-1;lab();draw();};
- const change=()=>{const ls=lights();let n;do{n=Math.floor(Math.random()*ls.length);}while(n===cur&&ls.length>1);cur=n;const l=ls[n];draw();
-  setCapi($('#tC'),l.f,l.ms||800);$('#tB').innerHTML=`${l.n}<small>${l.a}</small>`;$('#tB').style.borderColor=l.c;sfx('beep');say(`¡${l.n.toLowerCase()}! ${l.a}`);t=rint(...L.light)+(l.n==='ROJO'?0:800);};
+ gb().innerHTML=`${board()}<div class="mid"><div class="tlight" id="tl"></div><div class="bigcapi" id="tC"></div><div class="banner" id="tB">🚦 El semáforo<small>Mirad el color y haced la acción</small></div></div>
+  <div class="row"><button class="btn pri big2" id="tGo">▶ Empezar</button><button class="btn big2 bad" id="tM" disabled>😱 ¡Alguien ha fallado!</button><button class="btn" id="tX"></button>${L.i>=2?'<button class="btn" id="tT"></button>':''}<div class="pill"><b id="tN">0</b>/${N}</div></div>`;
+ const lab=()=>{$('#tX').textContent=extra?'🎨 5 colores':'🎨 3 colores';if($('#tT'))$('#tT').textContent=trick?'🧠 Modo trampa: sí':'🧠 Modo trampa: no';};lab();draw();setCapi($('#tC'),['stand','wave'],800);
+ $('#tX').onclick=()=>{if(state!=='wait')return;extra=!extra;cur=-1;lab();draw();};if($('#tT'))$('#tT').onclick=()=>{trick=!trick;lab();};
+ $('#tM').onclick=()=>{if(state!=='run'||fail)return;fail=true;$('#tM').disabled=true;point(sc,'k');};
+ const change=()=>{if(state==='run'&&cur>=0){if(!fail)point(sc,'c');}
+  if(n>=N&&!opts.auto){state='end';return finishGame(result(sc),starsOf(sc));}
+  n++;$('#tN').textContent=n;fail=false;$('#tM').disabled=false;
+  const ls=lights();let k;do{k=Math.floor(Math.random()*ls.length);}while(k===cur&&ls.length>1);cur=k;const l=ls[k];draw();
+  if(trick&&Math.random()<.6){const w=rand(ls.filter(x=>x!==l)),c=rand(ls.filter(x=>x!==w));setCapi($('#tC'),['stand']);
+   $('#tB').innerHTML=`<span style="color:${c.c};-webkit-text-stroke:1px #24324a">${w.n}</span><small>¡Mirad el semáforo, no la palabra!</small>`;$('#tB').style.borderColor='#94a3b8';sfx('beep');}
+  else{setCapi($('#tC'),l.f,l.ms||800);$('#tB').innerHTML=`${l.n}<small>${l.a}</small>`;$('#tB').style.borderColor=l.c;sfx('beep');say(`¡${l.n.toLowerCase()}! ${l.a}`);}
+  t=rint(...L.light)*Math.max(.55,1-n*.025)+(l.n==='ROJO'?0:600);};
  C.step=dt=>{if(state!=='run')return;t-=dt;if(t<=0)change();};
  const start=()=>{state='run';$('#tGo').style.display='none';change();};$('#tGo').onclick=start;if(opts.auto)after(1500,start);};
 
-G.espejo=(C)=>{const L=LV();let len=L.seq,seq=[],state='wait',i=0,t=0;
- const ui=()=>{gb().innerHTML=`<div class="mid"><div class="bigcapi" id="eC"></div><div style="display:flex;flex-direction:column;gap:14px;align-items:center"><div class="banner" id="eB">🪞 El espejo<small>Mirad bien a Capitulín y repetid sus movimientos</small></div><div class="dots" id="eD"></div><div class="count" id="eK"></div></div></div>
-  <div class="row" id="eR"><button class="btn pri big2" id="eGo">▶ Ronda de ${len} movimientos</button></div>`;setCapi($('#eC'),['stand','wave'],800);$('#eGo').onclick=play;};
- const play=()=>{seq=Array.from({length:len},()=>rand(MOVES));state='show';i=-1;t=0;$('#eR').innerHTML='';say('¡Mirad bien!');next();};
+/* ---------- 5. ESPEJO con récord ---------- */
+G.espejo=(C)=>{const L=LV();S.rec=S.rec||{};const pool=MOVES.slice(0,[6,9,12,12][L.i]);let len=L.seq,seq=[],state='wait',i=0,t=0,lives=3,best=S.rec[S.level]||0,maxOk=0;
+ const hud=()=>`<div class="row"><div class="pill">${'❤️'.repeat(lives)}${'🤍'.repeat(3-lives)}</div><div class="pill">🪞 Nivel: <b>${len}</b> movimientos</div><div class="pill">🏅 Récord: <b>${best}</b></div></div>`;
+ const ui=()=>{gb().innerHTML=hud()+`<div class="mid"><div class="bigcapi" id="eC"></div><div class="col"><div class="banner" id="eB">🪞 El espejo<small>Mirad bien a Capitulín y repetid sus movimientos</small></div><div class="dots" id="eD"></div><div class="count" id="eK"></div></div></div>
+  <div class="row" id="eR"><button class="btn pri big2" id="eGo">▶ ¡Mirad bien!</button></div>`;setCapi($('#eC'),['stand','wave'],800);$('#eGo').onclick=play;};
+ const play=()=>{let s2;do{s2=Array.from({length:len},()=>rand(pool));}while(s2.some((m,k)=>k&&m===s2[k-1]));seq=s2;state='show';i=-1;t=0;$('#eR').innerHTML='';say('¡Mirad bien!');after(1200,next);};
+ const showT=()=>L.show*Math.max(.7,1-(len-L.seq)*.05);
  const next=()=>{i++;if(i>=seq.length){state='do';t=len*1800+1500;$('#eC').innerHTML=capi('stand');$('#eB').innerHTML='🙌 ¡Ahora vosotros!<small>Repetid los movimientos en orden</small>';$('#eD').innerHTML='';sfx('go');say('¡Ahora vosotros!');return;}
-  const m=seq[i];$('#eC').innerHTML=capi(m.p);$('#eB').innerHTML=`${i+1}. ${m.n}`;$('#eD').innerHTML=seq.map((_,k)=>`<i class="${k<=i?'on':''}"></i>`).join('');sfx('beep');say(m.n);t=L.show;};
- C.step=dt=>{if(state==='show'){t-=dt;if(t<=0)next();}else if(state==='do'){t-=dt;$('#eK').textContent=Math.max(0,Math.ceil(t/1000));if(t<=0)check();}};
+  const m=seq[i];$('#eC').innerHTML=capi(m.p);$('#eB').innerHTML=`${i+1}. ${m.n}`;$('#eD').innerHTML=seq.map((_,k)=>`<i class="${k<=i?'on':''}"></i>`).join('');sfx('beep');say(m.n);t=showT();};
+ C.step=dt=>{if(state==='show'&&i>=0){t-=dt;if(t<=0)next();}else if(state==='do'){t-=dt;$('#eK').textContent=Math.max(0,Math.ceil(t/1000));if(t<=0)check();}};
  const check=()=>{state='check';$('#eK').textContent='';$('#eB').innerHTML='👀 ¿Lo habéis hecho bien?';
   gb().insertAdjacentHTML('beforeend',`<div class="seq">${seq.map((m,k)=>`<div class="mini"><span class="n">${k+1}</span>${capi(m.p)}${m.n}</div>`).join('')}</div>`);
-  $('#eR').innerHTML=`<button class="btn big2" id="eRep">🔁 Repetir</button><button class="btn pri big2" id="eUp">➡️ ¡Uno más! (${len+1})</button>`;
-  $('#eRep').onclick=()=>{ui();play();};$('#eUp').onclick=()=>{len=Math.min(10,len+1);ui();play();};say('¿Lo habéis hecho bien?');};
+  $('#eR').innerHTML=`<button class="btn big2 okb" id="eOk">✅ ¡Bien hecho!</button><button class="btn big2 bad" id="eKo">❌ Nos hemos equivocado</button>`;
+  $('#eOk').onclick=()=>{maxOk=Math.max(maxOk,len);if(len>best){best=len;S.rec[S.level]=best;save();say('¡Nuevo récord! '+len+' movimientos');}else say('¡Genial! Uno más');sfx('good');len=Math.min(12,len+1);ui();after(1500,play);};
+  $('#eKo').onclick=()=>{lives--;sfx('bad');if(lives<=0){const st=maxOk>=L.seq+3?3:maxOk>=L.seq+1?2:1;return finishGame(`🪞 ¡Habéis llegado a ${maxOk||'—'} movimientos!<br><small style="font-size:.5em">Récord: ${best}</small>`,st);}
+   say('¡No pasa nada! Otra vez');ui();after(1500,play);};
+  say('¿Lo habéis hecho bien?');};
  ui();};
 
 G.aventura=(C,opts)=>{let st=null,i=0,t=0;
@@ -382,28 +487,44 @@ G.calma=(C,opts)=>{const L=LV();let plan=[],k=0,t=0,cur=null,lastS=-1;
  C.step=dt=>{if(!cur)return;t+=dt;$('#cP').style.width=Math.min(100,t/cur.d*100)+'%';if(t>=cur.d)step();};
  opts.auto?begin('c'):pick();};
 
-G.tabata=(C)=>{const L=LV(),exs=EX.filter(e=>e.lv<=L.i);let sel=new Set(shuffle(exs.map((_,i)=>i)).slice(0,4)),work=L.i===0?15:20,rest=L.i===0?15:10,laps=1;
- let ph=[],k=0,t=0,lastS=-1;
- const cfg=()=>{gb().innerHTML=`<div class="cfg"><div class="banner">⏱️ Circuito Tabata</div><b>Elige los ejercicios</b><div class="chk">${exs.map((e,i)=>`<label><input type="checkbox" data-i="${i}" ${sel.has(i)?'checked':''}> ${e.n}</label>`).join('')}</div>
-  <div class="row"><b>Trabajo:</b>${[15,20,30].map(v=>`<button class="lvl ${v===work?'on':''}" data-w="${v}">${v} s</button>`).join('')}</div>
-  <div class="row"><b>Descanso:</b>${[10,15,20].map(v=>`<button class="lvl ${v===rest?'on':''}" data-r="${v}">${v} s</button>`).join('')}</div>
-  <div class="row"><b>Vueltas:</b>${[1,2,3].map(v=>`<button class="lvl ${v===laps?'on':''}" data-l="${v}">${v}</button>`).join('')}</div>
-  <button class="btn pri big2" id="tbGo">▶ Empezar (${fmt(total())})</button></div>`;
-  gb().querySelectorAll('[data-i]').forEach(c=>c.onchange=()=>{c.checked?sel.add(+c.dataset.i):sel.delete(+c.dataset.i);cfg();});
-  gb().querySelectorAll('[data-w]').forEach(b=>b.onclick=()=>{work=+b.dataset.w;cfg();});gb().querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>{rest=+b.dataset.r;cfg();});
-  gb().querySelectorAll('[data-l]').forEach(b=>b.onclick=()=>{laps=+b.dataset.l;cfg();});$('#tbGo').disabled=!sel.size;$('#tbGo').onclick=begin;};
- const total=()=>10000+sel.size*laps*(work+rest)*1000-rest*1000;
- const begin=()=>{const list=[...sel].map(i=>exs[i]);ph=[{k:'prep',d:10000,e:list[0]}];
-  for(let l=0;l<laps;l++)list.forEach((e,j)=>{ph.push({k:'work',d:work*1000,e});const nx=list[j+1]||(l<laps-1?list[0]:null);if(nx)ph.push({k:'rest',d:rest*1000,e:nx});});
-  gb().innerHTML=`<div class="mid"><div class="bigcapi" id="tbC"></div><div style="display:flex;flex-direction:column;gap:12px;align-items:center"><div class="phase" id="tbP"></div><div class="count" id="tbK"></div><div class="bigtxt" id="tbN" style="font-size:clamp(1.6rem,3.5vw,3rem)"></div><div class="pill" id="tbI"></div></div></div><div class="prog"><i id="tbG"></i></div>`;
-  k=-1;next();};
- const next=()=>{k++;if(k>=ph.length){say('¡Circuito completado! ¡Sois unos campeones!');return finishGame('🏆 ¡Circuito completado!');}const p=ph[k];t=0;lastS=-1;
-  const P=$('#tbP');$('#tbI').textContent=`${k+1} / ${ph.length}`;
-  if(p.k==='work'){P.textContent='💪 ¡A TOPE!';P.style.background='#16a34a';setCapi($('#tbC'),p.e.f,p.e.ms?p.e.ms/p.e.f.length:800);$('#tbN').textContent=p.e.n;sfx('go');say(`¡${p.e.n}! ¡Ya!`);}
-  else{P.textContent=p.k==='prep'?'🔔 ¡PREPARADOS!':'😮‍💨 DESCANSO';P.style.background=p.k==='prep'?'#f97316':'#3b82f6';setCapi($('#tbC'),['stand']);$('#tbN').textContent='Siguiente: '+p.e.n;say((p.k==='prep'?'Preparados. Empezamos con ':'Descanso. Siguiente: ')+p.e.n);}};
+function balanced(exs,n){const by={c:shuffle(exs.filter(e=>e.t==='c')),f:shuffle(exs.filter(e=>e.t==='f')),e:shuffle(exs.filter(e=>e.t==='e'))};
+ const order=['c','f','c','e','f','c','f','e'];const out=[];let k=0;while(out.length<n&&k<40){const e=by[order[k%order.length]].shift();if(e)out.push(e);k++;}return out;}
+G.tabata=(C)=>{const L=LV(),P=TAB[S.level],exs=EX.filter(e=>e.lv<=L.i);let list=balanced(exs,P.n),work=P.w,rest=P.r,laps=P.l;let ph=[],k=0,t=0,lastS=-1,half=false;
+ const total=()=>10000+(list.length*laps*(work+rest)-rest+(laps-1)*rest)*1000;
+ const card=(e,i)=>`<div class="mini"><span class="n">${i+1}</span>${capi(e.f[0])}${emEx(e)}${nmEx(e)}</div>`;
+ const preview=()=>{gb().innerHTML=`<div class="cfg"><div class="banner">⏱️ ${P.nm}<small>${L.name} · circuito equilibrado: cardio, fuerza y equilibrio</small></div><div class="seq">${list.map(card).join('')}</div>
+  <div class="row"><div class="pill">💪 ${work} s trabajo</div><div class="pill">😮‍💨 ${rest} s descanso</div><div class="pill">🔁 ${laps} ${laps>1?'vueltas':'vuelta'}</div><div class="pill">⏱ ${fmt(total())}</div></div>
+  <div class="row"><button class="btn pri big2" id="tbGo">▶ Empezar</button><button class="btn big2" id="tbNew">🔀 Otro circuito</button><button class="btn big2" id="tbCfg">✏️ Personalizar</button></div></div>`;
+  $('#tbGo').onclick=begin;$('#tbNew').onclick=()=>{list=balanced(exs,P.n);preview();};$('#tbCfg').onclick=cfg;};
+ const cfg=()=>{const sel=new Set(list.map(e=>exs.indexOf(e)));
+  const draw=()=>{gb().innerHTML=`<div class="cfg"><div class="banner">✏️ Personalizar</div><div class="chk">${exs.map((e,i)=>`<label><input type="checkbox" data-i="${i}" ${sel.has(i)?'checked':''}> ${emEx(e)}${nmEx(e)}</label>`).join('')}</div>
+   <div class="row"><b>Trabajo:</b>${[15,20,25,30,40].map(v=>`<button class="lvl ${v===work?'on':''}" data-w="${v}">${v} s</button>`).join('')}</div>
+   <div class="row"><b>Descanso:</b>${[10,15,20].map(v=>`<button class="lvl ${v===rest?'on':''}" data-r="${v}">${v} s</button>`).join('')}</div>
+   <div class="row"><b>Vueltas:</b>${[1,2,3].map(v=>`<button class="lvl ${v===laps?'on':''}" data-l="${v}">${v}</button>`).join('')}</div>
+   <div class="row"><button class="btn pri big2" id="tbOk">✔ Hecho</button><button class="btn big2" id="tbRst">↩️ Recomendado del curso</button></div></div>`;
+   gb().querySelectorAll('[data-i]').forEach(c=>c.onchange=()=>{c.checked?sel.add(+c.dataset.i):sel.delete(+c.dataset.i);});
+   gb().querySelectorAll('[data-w]').forEach(b=>b.onclick=()=>{work=+b.dataset.w;draw();});gb().querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>{rest=+b.dataset.r;draw();});
+   gb().querySelectorAll('[data-l]').forEach(b=>b.onclick=()=>{laps=+b.dataset.l;draw();});
+   $('#tbOk').onclick=()=>{if(sel.size)list=[...sel].sort((a,b)=>a-b).map(i=>exs[i]);preview();};
+   $('#tbRst').onclick=()=>{work=P.w;rest=P.r;laps=P.l;list=balanced(exs,P.n);preview();};};draw();};
+ const begin=()=>{ph=[{k:'prep',d:10000,e:list[0],lap:1}];
+  for(let l=0;l<laps;l++)list.forEach((e,j)=>{ph.push({k:'work',d:work*1000,e,lap:l+1});const lastE=j===list.length-1;
+   if(!lastE)ph.push({k:'rest',d:rest*1000,e:list[j+1],lap:l+1});else if(l<laps-1)ph.push({k:'long',d:rest*2000,e:list[0],lap:l+2});});
+  gb().innerHTML=`<div class="mid"><div class="bigcapi" id="tbC"></div><div class="col"><div class="phase" id="tbP"></div><div class="count" id="tbK"></div><div class="bigtxt" id="tbN" style="font-size:clamp(1.6rem,3.5vw,3rem)"></div>
+   <div class="row"><div class="pill" id="tbL"></div><div class="pill" id="tbI"></div></div></div><div class="nextB" id="tbX"></div></div><div class="prog"><i id="tbG"></i></div>`;k=-1;next();};
+ const nextWork=from=>{for(let j=from+1;j<ph.length;j++)if(ph[j].k==='work')return ph[j].e;return null;};
+ const next=()=>{k++;if(k>=ph.length){say('¡Circuito completado! ¡Sois unos campeones!');return finishGame(`🏆 ¡${P.nm} completado!`,3);}
+  const p=ph[k];t=0;lastS=-1;half=false;const Pp=$('#tbP');$('#tbL').textContent=`🔁 Vuelta ${p.lap}/${laps}`;
+  const nw=ph.slice(0,k+1).filter(x=>x.k==='work').length;$('#tbI').textContent=`💪 ${nw}/${list.length*laps}`;
+  const nx=p.k==='work'?nextWork(k):p.e;$('#tbX').innerHTML=nx?`<small>Siguiente</small>${capi(nx.f[0])}<b>${emEx(nx)}${nmEx(nx)}</b>`:'<small>¡Último!</small><b>🏁</b>';
+  if(p.k==='work'){Pp.textContent='💪 ¡A TOPE!';Pp.style.background='#16a34a';setCapi($('#tbC'),p.e.f,p.e.ms?p.e.ms/p.e.f.length:800);$('#tbN').textContent=emEx(p.e)+nmEx(p.e);sfx('go');say(`¡${nmEx(p.e)}! ¡Ya!`);}
+  else{const txt={prep:'🔔 ¡PREPARADOS!',rest:'😮‍💨 DESCANSO',long:'💧 DESCANSO LARGO'}[p.k];Pp.textContent=txt;Pp.style.background=p.k==='prep'?'#f97316':p.k==='long'?'#8b5cf6':'#3b82f6';
+   setCapi($('#tbC'),p.k==='long'?['breathIn','stand']:['stand'],2000);$('#tbN').textContent='Siguiente: '+emEx(p.e)+nmEx(p.e);
+   say(p.k==='prep'?'Preparados. Empezamos con '+nmEx(p.e):p.k==='long'?'Descanso largo. Bebed agua y respirad. Vuelta '+p.lap:'Descanso. Siguiente: '+nmEx(p.e));}};
  C.step=dt=>{if(!ph.length||k<0||k>=ph.length)return;const p=ph[k];t+=dt;const s=Math.ceil((p.d-t)/1000);if(s!==lastS){lastS=s;$('#tbK').textContent=Math.max(0,s);if(s<=3&&s>0)sfx('beep');}
+  if(p.k==='work'&&!half&&p.d>=20000&&t>=p.d/2){half=true;say(rand(['¡Mitad! ¡Seguid así!','¡Vamos, que podéis!','¡Ya queda menos!']));}
   $('#tbG').style.width=Math.min(100,t/p.d*100)+'%';if(t>=p.d)next();};
- cfg();};
+ preview();};
 
 /* ================== SESIÓN COMPLETA ================== */
 function sessionSteps(){return S.level==='inf'
